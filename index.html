@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Mood Tracker</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f7fa;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .box {
+            background: white;
+            width: 350px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        select, button {
+            padding: 8px;
+            margin-top: 10px;
+            width: 80%;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .last {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>How are you feeling today?</h2>
+
+        <form method="POST">
+            <select name="mood" required>
+                <option value="">-- Select Mood --</option>
+                <option>Happy 😊</option>
+                <option>Calm 😌</option>
+                <option>Motivated 🔥</option>
+                <option>Sad 😢</option>
+                <option>Stressed 😓</option>
+            </select>
+            <br>
+            <button type="submit">Save Mood</button>
+        </form>
+
+        {% if last_mood %}
+            <div class="last">
+                Last saved mood:<br>
+                {{ last_mood }}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
