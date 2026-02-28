@@ -28,6 +28,11 @@ def home():
     if request.method == "POST":
         mood = request.form["mood"]
         save_mood(mood)
+        @app.route("/history")
+def history():
+    moods = get_all_moods()
+    moods.reverse()  # show newest first
+    return render_template("history.html", moods=moods)
 
     last_mood = get_last_mood()
     return render_template("index.html", last_mood=last_mood)
@@ -35,3 +40,9 @@ def home():
 
 if __name__ == "__main__":
     app.run(debug=True)
+def get_all_moods():
+    try:
+        with open(FILE_NAME, "r") as f:
+            return f.readlines()
+    except FileNotFoundError:
+        return []
