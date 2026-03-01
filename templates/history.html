@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mood History</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f7fa;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .box {
+            background: white;
+            width: 400px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>All Saved Moods</h2>
+
+        {% if moods %}
+            <ul>
+                {% for mood in moods %}
+                    <li>{{ mood }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No moods saved yet.</p>
+        {% endif %}
+
+        <a href="/">⬅ Back to Home</a>
+    </div>
+
+</body>
+</html>
