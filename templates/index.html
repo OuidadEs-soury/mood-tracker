@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mood Tracker</title>
+    <title>Mood Tracker Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1f1f1f, #2c3e50);
+            background: linear-gradient(135deg, #141e30, #243b55);
             color: white;
             display: flex;
             justify-content: center;
@@ -15,11 +15,17 @@
         }
 
         .container {
-            width: 600px;
+            width: 700px;
         }
 
         h1 {
             text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            opacity: 0.7;
             margin-bottom: 30px;
         }
 
@@ -37,14 +43,21 @@
             transform: scale(1.1);
         }
 
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
         .card {
             background: rgba(255,255,255,0.1);
             padding: 15px;
             border-radius: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 12px;
         }
 
         .date {
@@ -52,17 +65,8 @@
             opacity: 0.7;
         }
 
-        .delete-btn {
-            background: crimson;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            color: white;
-        }
-
         .stats {
-            margin-top: 30px;
+            margin-top: 25px;
             padding: 15px;
             background: rgba(255,255,255,0.1);
             border-radius: 12px;
@@ -75,51 +79,68 @@
             text-align: center;
             margin-bottom: 15px;
         }
+
+        .streak {
+            font-size: 18px;
+            margin-top: 5px;
+            color: orange;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>My Mood Tracker</h1>
+<div class="container">
+    <h1>Mood Tracker Pro</h1>
+    <div class="subtitle">Track your emotions. Understand your patterns.</div>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash">
-                    {{ messages[0] }}
-                </div>
-            {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
 
-        <form method="POST" class="mood-buttons">
-            {% for key, emoji in moods_dict.items() %}
+    <form method="POST">
+        <div class="mood-buttons">
+            {% for key, value in moods_dict.items() %}
                 <button type="submit" name="mood" value="{{ key }}">
-                    {{ emoji }}
+                    {{ value.emoji }}
                 </button>
             {% endfor %}
-        </form>
-
-        <h2>History</h2>
-
-        {% for mood in moods %}
-            <div class="card">
-                <div>
-                    <div>{{ moods_dict[mood.mood] }} {{ mood.mood.capitalize() }}</div>
-                    <div class="date">{{ mood.date }}</div>
-                </div>
-
-                <form method="POST">
-                    <button class="delete-btn" name="delete" value="{{ loop.index0 }}">Delete</button>
-                </form>
-            </div>
-        {% endfor %}
-
-        <div class="stats">
-            <h3>Statistics</h3>
-            <p>Total moods logged: {{ total }}</p>
-            {% if most_common %}
-                <p>Most common mood: {{ moods_dict[most_common] }} {{ most_common.capitalize() }}</p>
-            {% endif %}
         </div>
 
+        <textarea name="note" placeholder="Write something about your day..."></textarea>
+    </form>
+
+    <h2>History</h2>
+
+    {% for mood in moods %}
+        <div class="card">
+            <div>
+                <strong>{{ moods_dict[mood.mood].emoji }} {{ mood.mood.capitalize() }}</strong>
+            </div>
+            <div class="date">{{ mood.timestamp }}</div>
+            {% if mood.note %}
+                <p>{{ mood.note }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div class="stats">
+        <h3>Statistics</h3>
+        <p>Total moods logged: {{ total }}</p>
+
+        {% if most_common %}
+            <p>Most common mood:
+                {{ moods_dict[most_common].emoji }}
+                {{ most_common.capitalize() }}
+            </p>
+        {% endif %}
+
+        <div class="streak">
+            🔥 Current Streak: {{ streak }} days
+        </div>
     </div>
+</div>
 </body>
 </html>
